@@ -1,5 +1,6 @@
 package com.example.board;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,16 +12,28 @@ import java.util.List;
 
 @Repository
 public class BoardDAO {
+	@Autowired
+	SqlSession sqlSession;
+
+	public int insertBoard(BoardVO vo){
+		int result = sqlSession.insert("Board.insertBoard", vo);
+		return result;
+	}
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
-	public int insertBoard(com.example.board.BoardVO vo){
-		String sql = "insert into BOARD (category,title, writer, content) values("
-				+"'"+vo.getCategory()+"',"
-				+"'"+vo.getTitle()+"',"
-				+"'"+vo.getWriter()+"',"
-				+"'"+vo.getContent()+"')";
+
+
+	public int updateBoard(BoardVO vo){
+		String sql = "update BOARD set category='"+vo.getCategory()+"', "
+				+"professor= '" + vo.getProfessor()+"', "
+				+"grade= '" + vo.getGrade() +"', "
+				+"major= '" + vo.getMajor() +"', "
+				+"place= '" + vo.getPlace() +"', "
+				+"duedate= '" + vo.getDuedate() +"', "
+				+"content= '" + vo.getContent() +"' where seq="
+				+ vo.getSeq();
 		return jdbcTemplate.update(sql);
 	}
 	public int deleteBoard(int seq){
@@ -28,35 +41,28 @@ public class BoardDAO {
 		return jdbcTemplate.update(sql);
 	}
 
-	public int updateBoard(com.example.board.BoardVO vo){
-		String sql = "update BOARD set title='"+vo.getTitle()+"', "
-				+"category= '" + vo.getCategory()+"', "
-				+"title= '" + vo.getTitle() +"', "
-				+"writer= '" + vo.getWriter() +"', "
-				+"content= '" + vo.getContent() +"' where seq="
-				+ vo.getSeq();
-		return jdbcTemplate.update(sql);
-	}
 
-	public com.example.board.BoardVO getBoard(int seq){
-		String sql = "select *from BOARD where seq="+seq;
-		return jdbcTemplate.queryForObject(sql, new BoardRowMapper());
+	public BoardVO getBoard(int seq){
+		BoardVO one = sqlSession.selectOne("Board.getBoard",seq);
+		return one;
 	}
-	public List<com.example.board.BoardVO> getBoardList(){
-		String sql = "select * from BOARD order by regdate desc";
-		return jdbcTemplate.query(sql,new BoardRowMapper());
+	public List<BoardVO> getBoardList(){
+		List<BoardVO>list = sqlSession.selectList("Board.getBoardList");
+		return list;
 	}
 }
-
-class BoardRowMapper implements RowMapper<com.example.board.BoardVO>{
+class BoardRowMapper implements RowMapper<BoardVO>{
 	@Override
-	public com.example.board.BoardVO mapRow(ResultSet rs, int rowNum) throws SQLException{
-		com.example.board.BoardVO vo = new com.example.board.BoardVO();
+	public BoardVO mapRow(ResultSet rs, int rowNum) throws SQLException{
+		BoardVO vo = new BoardVO();
 		vo.setSeq(rs.getInt("seq"));
 		vo.setCategory(rs.getString("category"));
-		vo.setTitle(rs.getString("title"));
+		vo.setProfessor(rs.getString("professor"));
+		vo.setGrade(rs.getString("grade"));
+		vo.setMajor(rs.getString("major"));
+		vo.setPlace(rs.getString("place"));
 		vo.setContent(rs.getString("content"));
-		vo.setWriter(rs.getString("writer"));
+		vo.setDuedate(rs.getString("duedate"));
 		vo.setRegdate(rs.getDate("regdate"));
 		return vo;
 	}

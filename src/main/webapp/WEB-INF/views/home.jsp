@@ -7,7 +7,7 @@
 <body>
 <h1>Hello world!</h1>
 <p>the time on the server is ${serverTime}</p>
-<p><a href="board/list">go to list</a></p>
+<p><a href="login/login">go to list</a></p>
 
 </body>
 </html>

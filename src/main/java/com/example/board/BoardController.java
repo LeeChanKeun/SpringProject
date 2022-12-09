@@ -25,7 +25,7 @@ public class BoardController {
     }
 
     @RequestMapping(value = "/addok", method = RequestMethod.POST)
-    public String addPostOk(com.example.board.BoardVO vo){
+    public String addPostOk(BoardVO vo){
         if(boardService.insertBoard(vo)==0){
             System.out.println("데이터 추가 실패");
         }else{
@@ -35,13 +35,13 @@ public class BoardController {
     }
     @RequestMapping(value = "/editform/{id}", method = RequestMethod.GET)
     public String editPost(@PathVariable("id") int id, Model model){
-        com.example.board.BoardVO boardVO = boardService.getBoard(id);
+        BoardVO boardVO = boardService.getBoard(id);
         model.addAttribute("boardVO",boardVO);
         return "editform";
     }
 
     @RequestMapping(value = "/editok", method = RequestMethod.POST)
-    public String editPostOK(com.example.board.BoardVO vo){
+    public String editPostOK(BoardVO vo){
         int i = boardService.updateBoard(vo);
         if(i==0){
             System.out.println("데이터 수정 실패");

@@ -36,14 +36,18 @@
 <body>
 
 <h1>게시판</h1>
+<p><a href="/SpringProject_war_exploded/login/login">logout</a></p>
 <table id="list" width="90%">
     <tr>
         <th>Id</th>
         <th>Category</th>
-        <th>Title</th>
-        <th>Writer</th>
+        <th>ProFessor</th>
+        <th>Grade(P/F)</th>
+        <th>Major</th>
+        <th>Place</th>
         <th>Content</th>
         <th>Regdate</th>
+        <th>Duedate</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
@@ -51,12 +55,15 @@
     <tr>
     <td>${u.seq}</td>
     <td>${u.category}</td>
-    <td>${u.title}</td>
-    <td>${u.writer}</td>
+    <td>${u.professor}</td>
+    <td>${u.grade}</td>
+    <td>${u.major}</td>
+    <td>${u.place}</td>
     <td>${u.content}</td>
     <td>${u.regdate}</td>
-    <td><a href="editform/${u.seq}">Edit</a> </td>
-    <td><a href="javascript:delete_ok('${u.seq}')">Delete</a> </td>
+    <td>${u.duedate}</td>
+    <td><a href="editform/${u.seq}">Edit</a></td>
+    <td><a href="javascript:delete_ok('${u.seq}')">Delete</a></td>
     </tr>
 </c:forEach>
 </table>
